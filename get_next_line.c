@@ -12,6 +12,7 @@
 
 #include "get_next_line.h"
 
+/* Coupe 'str' depuis '\n' et retourne ce qu'il y a apres. */
 char	*cut_str(char *str)
 {
 	char	*ret;
@@ -33,6 +34,7 @@ char	*cut_str(char *str)
 	return (ret);
 }
 
+/* Verifie si 'str' contient '\n' : 1 si oui, -1 si non. */
 int	check_nl(char *str)
 {
 	int	i;
@@ -49,6 +51,7 @@ int	check_nl(char *str)
 	return (-1);
 }
 
+/* Retourne une ligne complete jusqu'a \n ou jusqu'a EOF depuis stash */
 char	*fill_line(char **stash, int ret)
 {
 	char	*line;
@@ -66,6 +69,7 @@ char	*fill_line(char **stash, int ret)
 	return (NULL);
 }
 
+/* Initialise stash avec les premieres donnees lues depuis le fichier */
 char	*init_stash(char *stash, int fd, char *buffer)
 {
 	int		ret;
@@ -89,6 +93,7 @@ char	*init_stash(char *stash, int fd, char *buffer)
 	return (stash);
 }
 
+/* Recupere la prochaine ligne d'un fichier (fd) */
 char	*get_next_line(int fd)
 {
 	static char	*stash;

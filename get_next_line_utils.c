@@ -12,6 +12,7 @@
 
 #include "get_next_line.h"
 
+/* Le meme ft_strlen que la libft */
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -22,6 +23,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+/* Le meme ft_strjoin que la libft a la difference qu'il free 's1' a la fin */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
@@ -29,13 +31,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		k;
 	char	*ret;
 
-	i = 0;
-	while (s1[i])
-		i++;
-	j = 0;
-	while (s2[j])
-		j++;
-	ret = malloc ((i + j + 1) * sizeof(char));
+	ret = malloc ((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!ret)
 		return (NULL);
 	k = 0;
@@ -50,6 +46,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (ret);
 }
 
+/* Le meme ft_strchr que la libft */
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s)
@@ -63,6 +60,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+/* Le meme ft_substr que la libft */
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
