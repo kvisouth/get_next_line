@@ -121,3 +121,28 @@ char	*get_next_line(int fd)
 	}
 	return (NULL);
 }
+
+
+#include <stdio.h>
+#include <fcntl.h>
+int main(int ac, char **av)
+{
+	char	*line;
+
+	int i = 0;
+	int fd = open("test", O_RDONLY);
+	if (ac == 2)
+	{
+		while (i < atoi(av[1]))
+		{
+			line = get_next_line(fd);
+			printf("Ligne %d : %s\n", i + 1, line);
+			free(line);
+			i++;
+		}
+	}
+	while ((line = get_next_line(fd)) != NULL)
+		free(line);
+	close(fd);
+	return (0);
+}
