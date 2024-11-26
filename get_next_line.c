@@ -75,6 +75,7 @@ char	*init_stash(char *stash, int fd, char *buffer)
 	return (stash);
 }
 
+/* Lit les donnees depuis le fichier et les ajoute a stash */
 char	*read_buffer(int fd, char *stash, int *ret)
 {
 	char	*buffer;
@@ -84,14 +85,12 @@ char	*read_buffer(int fd, char *stash, int *ret)
 		return (NULL);
 	*ret = read(fd, buffer, BUFFER_SIZE);
 	if (*ret == -1)
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return (free(buffer), NULL);
 	buffer[*ret] = '\0';
 	stash = ft_strjoin(stash, buffer);
-	free(buffer);
-	return (stash);
+	if (!stash)
+		return (free(buffer), NULL);
+	return (free(buffer), stash);
 }
 
 /* Recupere la prochaine ligne d'un fichier (fd) */
