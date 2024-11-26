@@ -12,28 +12,6 @@
 
 #include "get_next_line.h"
 
-/* Coupe 'str' depuis '\n' et retourne ce qu'il y a apres. */
-char	*cut_str(char *str)
-{
-	char	*ret;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '\n')
-		i++;
-	ret = malloc(ft_strlen(str) - i + 1);
-	if (!ret)
-		return (NULL);
-	i++;
-	while (str[i])
-		ret[j++] = str[i++];
-	ret[j] = '\0';
-	free(str);
-	return (ret);
-}
-
 /* Verifie si 'str' contient '\n' : 1 si oui, -1 si non. */
 int	check_nl(char *str)
 {
@@ -63,12 +41,12 @@ char	*fill_line(char **stash, int ret)
 			return (NULL);
 		return (free(*stash), *stash = NULL, line);
 	}
-	else if (check_nl(*stash) != -1)
+	else if (check_nl(*stash) == 1)
 	{
 		line = ft_substr(*stash, 0, ft_strchr(*stash, '\n') - *stash + 1);
 		if (!line)
 			return (NULL);
-		return (*stash = cut_str(*stash), line);
+		return (*stash = ft_cutstr(*stash), line);
 	}
 	return (NULL);
 }
@@ -97,6 +75,25 @@ char	*init_stash(char *stash, int fd, char *buffer)
 	return (stash);
 }
 
+char	*read_buffer(int fd, char *stash, int *ret)
+{
+	char	*buffer;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	*ret = read(fd, buffer, BUFFER_SIZE);
+	if (*ret == -1)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	buffer[*ret] = '\0';
+	stash = ft_strjoin(stash, buffer);
+	free(buffer);
+	return (stash);
+}
+
 /* Recupere la prochaine ligne d'un fichier (fd) */
 char	*get_next_line(int fd)
 {
@@ -106,20 +103,15 @@ char	*get_next_line(int fd)
 	int			ret;
 
 	buffer = NULL;
+	ret = 0;
 	stash = init_stash(stash, fd, buffer);
+	if (!stash)
+		return (NULL);
 	while (stash)
 	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return (NULL);
-		ret = read(fd, buffer, BUFFER_SIZE);
-		if (ret == -1)
-			return (free(buffer), NULL);
-		buffer[ret] = '\0';
-		stash = ft_strjoin(stash, buffer);
+		stash = read_buffer(fd, stash, &ret);
 		if (!stash)
 			return (NULL);
-		free(buffer);
 		line = fill_line(&stash, ret);
 		if (line)
 			return (line);

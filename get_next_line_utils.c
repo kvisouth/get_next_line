@@ -88,3 +88,25 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
+/* Coupe 'str' depuis '\n' et retourne ce qu'il y a apres. */
+char	*ft_cutstr(char *str)
+{
+	char	*ret;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\n')
+		i++;
+	ret = malloc(ft_strlen(str) - i + 1);
+	if (!ret)
+		return (NULL);
+	i++;
+	while (str[i])
+		ret[j++] = str[i++];
+	ret[j] = '\0';
+	free(str);
+	return (ret);
+}
