@@ -102,7 +102,6 @@ char	*get_next_line(int fd)
 	int			ret;
 
 	buffer = NULL;
-	ret = 0;
 	stash = init_stash(stash, fd, buffer);
 	while (stash)
 	{
@@ -114,6 +113,8 @@ char	*get_next_line(int fd)
 			return (free(buffer), NULL);
 		buffer[ret] = '\0';
 		stash = ft_strjoin(stash, buffer);
+		if (!stash)
+			return (NULL);
 		free(buffer);
 		line = fill_line(&stash, ret);
 		if (line)
@@ -122,27 +123,25 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
-/*
-#include <stdio.h>
-#include <fcntl.h>
-int main(int ac, char **av)
-{
-  int i = 0;
-  char *line;
-  if (ac == 2)
-  {
-    int fd = open("test", O_RDONLY);
-    while (i < atoi(av[1]))
-    {
-      line = get_next_line(fd);
-      printf("%d: %s\n", i, line);
-      free(line);
-      i++;
-    }
-    while ((line = get_next_line(fd)) != NULL)
-      free(line);
-    close(fd);
-  }
-  return 0;
-}
-*/
+// #include <stdio.h>
+// #include <fcntl.h>
+// int main(int ac, char **av)
+// {
+// 	int i = 0;
+// 	char *line;
+// 	if (ac == 2)
+// 	{
+// 		int fd = open("test", O_RDONLY);
+// 		while (i < atoi(av[1]))
+// 		{
+// 			line = get_next_line(fd);
+// 			printf("%d: %s\n", i, line);
+// 			free(line);
+// 			i++;
+// 		}
+// 		while ((line = get_next_line(fd)) != NULL)
+// 			free(line);
+// 		close(fd);
+// 	}
+// 	return 0;
+// }
