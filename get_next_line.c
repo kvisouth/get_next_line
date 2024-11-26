@@ -59,11 +59,15 @@ char	*fill_line(char **stash, int ret)
 	if (ret < BUFFER_SIZE && check_nl(*stash) == -1)
 	{
 		line = ft_substr(*stash, 0, ft_strlen(*stash));
+		if (!line)
+			return (NULL);
 		return (free(*stash), *stash = NULL, line);
 	}
 	else if (check_nl(*stash) != -1)
 	{
 		line = ft_substr(*stash, 0, ft_strchr(*stash, '\n') - *stash + 1);
+		if (!line)
+			return (NULL);
 		return (*stash = cut_str(*stash), line);
 	}
 	return (NULL);
